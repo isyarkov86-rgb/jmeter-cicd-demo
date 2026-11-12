@@ -22,7 +22,7 @@ jobs:
       - name: Execute JMeter Test
         shell: cmd
         run: |
-          "C:\JMeter\apache-jmeter-5.6.3\bin\jmeter.bat" -n -t test.jmx -l results.jtl -e -o html_report
+          "C:\JMeter\apache-jmeter-5.6.3\bin\jmeter.bat" -n -t Test_Plan1.jmx -l results.jtl -e -o html_report
 
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
