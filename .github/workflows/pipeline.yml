@@ -1,0 +1,31 @@
+name: Run JMeter Load Test
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # Добавляет кнопку ручного запуска в браузере
+
+jobs:
+  load-test:
+    runs-on: self-hosted # Говорим запускать задачу на твоем ноутбуке
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Clean old reports
+        run: |
+          if exist results.jtl del /f /q results.jtl
+          if exist html_report rmdir /s /q html_report
+
+      - name: Execute JMeter Test
+        run: |
+          # ВНИМАНИЕ: Замени путь ниже на свой реальный путь к файлу jmeter.bat!
+          "C:\apache-jmeter-5.6.3\bin\jmeter.bat" -n -t test.jmx -l results.jtl -e -o html_report
+
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: JMeter-HTML-Report
+          path: html_report/
